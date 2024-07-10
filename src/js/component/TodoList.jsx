@@ -75,11 +75,14 @@ function TodoList() {
                 })
                 .then(data => {
                     if (data) {
-                        const editLabel = tareas.filter(item => item.id.label !== id);
-                        setEditLabel(editLabel);
+                        const updatedTareas = tareas.map(item => 
+                            item.id === editLabel ? {...item, label: newTarea, is_done: true} : item
+                        );
+                        setTareas(updatedTareas);
+                        setNewTarea("");
                     }
-
                 })
+                
                 .catch(error => {
                     console.log(error);
                 });
