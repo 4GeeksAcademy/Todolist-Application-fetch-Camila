@@ -75,13 +75,26 @@ function TodoList() {
                 })
                 .then(data => {
                     if (data) {
-                        const updatedTareas = tareas.map(item => 
-                            item.id === editLabel ? {...item, label: newTarea, is_done: true} : item
-                        );
-                        setTareas(updatedTareas);
-                        setNewTarea("");
+                        const tareaIndex = tareas.findIndex(item => item.id === editLabel);
+                
+                        if (tareaIndex !== -1) {
+                            const updatedTarea = {
+                                id: tareas[tareaIndex].id,
+                                label: newTarea,
+                                is_done: true
+                            };
+                
+                            const updatedTareas = tareas
+                                .slice(0, tareaIndex)
+                                .concat(updatedTarea)
+                                .concat(tareas.slice(tareaIndex + 1));
+                
+                            setTareas(updatedTareas);
+                            setNewTarea("");
+                        }
                     }
                 })
+                
                 
                 .catch(error => {
                     console.log(error);
@@ -212,7 +225,7 @@ function TodoList() {
 
 
 
-            <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
